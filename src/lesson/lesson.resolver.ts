@@ -6,6 +6,10 @@ import { CreateLessonInput } from "./lesson.input";
 @Resolver(() => LessonType)
 export class LessonResolver {
   constructor(private lessonService: LessonService) {}
+  @Query(() => [LessonType])
+  async lessons() {
+    return await this.lessonService.getLessons();
+  }
   @Query(() => LessonType)
   async lesson(@Args("id") id: string) {
     return await this.lessonService.getLesson(id);
