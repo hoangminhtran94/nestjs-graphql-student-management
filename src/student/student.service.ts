@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { StudentRepository } from "./student.repository";
 import { Student } from "./student.entity";
 import { CreateStudentInput } from "./student.input";
+import { v4 } from "uuid";
 
 @Injectable()
 export class StudentService {
@@ -15,7 +16,9 @@ export class StudentService {
   }
   createStudent(createStudentInput: CreateStudentInput): Promise<Student> {
     const student = this.studentRepository.create({
-      name: createStudentInput.name,
+      id: v4(),
+      firstName: createStudentInput.firstName,
+      lastName: createStudentInput.lastName,
     });
     return this.studentRepository.save(student);
   }

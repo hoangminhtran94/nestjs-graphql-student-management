@@ -5,5 +5,7 @@ export class StudentType {
   @Field(() => ID)
   id: string;
   @Field()
-  name: string;
+  firstName: string;
+  @Field()
+  lastName: string;
 }
