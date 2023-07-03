@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { LessonRepository } from "./lesson.repository";
 import { Lesson } from "./lesson.entity";
-import { CreateLessonInput } from "./lesson.input";
+import { AssignStudentsToLessonInput, CreateLessonInput } from "./lesson.input";
 
 @Injectable()
 export class LessonService {
@@ -15,5 +15,18 @@ export class LessonService {
   }
   getLessons(): Promise<Lesson[]> {
     return this.lessonRepository.find();
+  }
+
+  async assignStudentsToLesson(
+    assignStudentsToLessonInput: AssignStudentsToLessonInput
+  ): Promise<Lesson> {
+    const lesson = await this.lessonRepository.findOne({
+      where: { id: assignStudentsToLessonInput.lessonId },
+    });
+    lesson.students = [
+      ...(lesson.students ? lesson.students : []),
+      ...assignStudentsToLessonInput.studentIds,
+    ];
+    return this.lessonRepository.save(lesson);
   }
 }

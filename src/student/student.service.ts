@@ -3,6 +3,7 @@ import { StudentRepository } from "./student.repository";
 import { Student } from "./student.entity";
 import { CreateStudentInput } from "./student.input";
 import { v4 } from "uuid";
+import { In } from "typeorm";
 
 @Injectable()
 export class StudentService {
@@ -21,5 +22,18 @@ export class StudentService {
       lastName: createStudentInput.lastName,
     });
     return this.studentRepository.save(student);
+  }
+  async getManyStudents(studentIds: string[]): Promise<Student[]> {
+    // const promises: Promise<Student>[] = [];
+    // console.log(In(studentIds));
+    // studentIds.forEach((id) => {
+    //   promises.push(this.studentRepository.findOne({ where: { id } }));
+    // });
+
+    // return await Promise.all(promises);
+
+    return await this.studentRepository.find({
+      where: { id: { $in: studentIds } as any },
+    });
   }
 }
